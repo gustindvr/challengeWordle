@@ -1,12 +1,22 @@
-import { Container, Heading } from '@chakra-ui/react';
+import { useContext, useState } from 'react';
+
+import { Box, Divider } from '@chakra-ui/react';
+
+import Navbar from './components/molecules/Navbar';
+import { ThemeContext } from './components/contexts/ThemeContext';
+import Keyboard from './components/molecules/Keyboard';
 
 function App() {
+  const [letterSelected, setLetterSelected] = useState(undefined);
+
+  const { themeSelected } = useContext(ThemeContext);
+
   return (
-    <Container size='lg'>
-      <Heading as='h1' size='xl'>
-        Dynamic Wordle
-      </Heading>
-    </Container>
+    <Box backgroundColor={themeSelected.background} color={themeSelected.color}>
+      <Navbar />
+      <Divider />
+      <Keyboard setLetterSelected={setLetterSelected} />
+    </Box>
   );
 }
 
