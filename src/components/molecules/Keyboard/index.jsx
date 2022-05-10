@@ -1,82 +1,83 @@
-import { Button, Flex } from '@chakra-ui/react';
 import React from 'react';
-import Letter from '../../atoms/Letter';
+import LetterKeyboard from './letterKeyboard';
+
+import { Button, Flex, SimpleGrid } from '@chakra-ui/react';
 
 import {
   letterColumnOne,
   letterColumnTwo,
   letterColumnThree,
-} from '../../../const/keyboard';
+} from '../../../const';
 
-const Keyboard = ({ setLetterSelected }) => {
+const Keyboard = ({ currentWord, setCurrentWord, onfinish }) => {
+  const deleteLetter = () => {
+    const newWord = currentWord.slice(0, -1);
+    setCurrentWord(newWord);
+  };
+
   return (
-    <>
+    <SimpleGrid>
       <Flex
-        w='70%'
+        w='100%'
         justifyContent='center'
         alignItems='center'
         textAlign='center'
         flexFlow='row wrap'
       >
-        {letterColumnOne.map((letter) => {
+        {letterColumnOne.map((letter, i) => {
           return (
-            <Letter
-              value={letter.toUpperCase()}
-              key={letter}
-              setLetterSelected={setLetterSelected}
+            <LetterKeyboard
+              value={letter?.letter?.toUpperCase()}
+              key={i}
+              setCurrentWord={setCurrentWord}
+              currentWord={currentWord}
             />
           );
         })}
       </Flex>
       <Flex
-        w='70%'
+        w='100%'
         justifyContent='center'
         alignItems='center'
         textAlign='center'
         flexFlow='row wrap'
       >
-        {letterColumnTwo.map((letter) => {
+        {letterColumnTwo.map((letter, i) => {
           return (
-            <Letter
-              value={letter.toUpperCase()}
-              key={letter}
-              setLetterSelected={setLetterSelected}
+            <LetterKeyboard
+              value={letter?.letter?.toUpperCase()}
+              key={i}
+              setCurrentWord={setCurrentWord}
+              currentWord={currentWord}
             />
           );
         })}
       </Flex>
       <Flex
-        w='70%'
+        w='100%'
         justifyContent='center'
         alignItems='center'
         textAlign='center'
         flexFlow='row wrap'
       >
-        <Button
-          bg='var(--bg-letters-dark)'
-          w='4em'
-          onClick={() => console.log('mandando las letras elegidas a jugar')}
-        >
+        <Button bg='var(--bg-letters-dark)' w='4em' onClick={() => onfinish()}>
           Enter
         </Button>
-        {letterColumnThree.map((letter) => {
+        {letterColumnThree.map((letter, i) => {
           return (
-            <Letter
-              value={letter.toUpperCase()}
-              key={letter}
-              setLetterSelected={setLetterSelected}
+            <LetterKeyboard
+              value={letter?.letter?.toUpperCase()}
+              key={i}
+              setCurrentWord={setCurrentWord}
+              currentWord={currentWord}
             />
           );
         })}
-        <Button
-          bg='var(--bg-letters-dark)'
-          w='4em'
-          onClick={() => console.log('borrando ultima letra')}
-        >
+        <Button bg='var(--bg-letters-dark)' w='4em' onClick={deleteLetter}>
           Delete
         </Button>
       </Flex>
-    </>
+    </SimpleGrid>
   );
 };
 
