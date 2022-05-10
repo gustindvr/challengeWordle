@@ -5,4 +5,24 @@
   padding: 0;
   box-sizing: border-box;
   background-color: var(--principal-dark-bg);
+  color: var(--principal-dark-text);
+}
+
+.text-shadow-letter {
+  text-shadow: 1px 16px 6px var(--bg-correct-absent);
+  color: var(--principal-text-shadow-dark);
+}
+
+.status-letter-correct {
+  background-color: var(--bg-correct-letter);
+}
+
+.status-letter-present {
+  background-color: var(--bg-present-letter);
+  color: var(--principal-dark-bg);
+}
+
+.status-letter-absent {
+  background-color: var(--bg-absent-letter);
+  color: var(--principal-dark-bg);
 }

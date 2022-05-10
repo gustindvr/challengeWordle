@@ -1,20 +1,20 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-const Letter = (Props) => {
-  const { value, setLetterSelected } = Props;
-
+const Letter = ({ value, status }) => {
   return (
     <Box
-      textAlign='center'
-      verticalAlign='middle'
-      borderRadius='lg'
-      bgColor='var(--bg-letters-dark)'
-      w='2em'
-      h='2em'
-      m='1em'
-      cursor='pointer'
-      onClick={() => setLetterSelected(value)}
+      fontSize="2xl"
+      padding="0.5em"
+      margin="0.2em"
+      w="2em"
+      h="2em"
+      display="flex"
+      flexDir="row"
+      justifyContent="center"
+      alignItems="center"
+      className={`status-letter-${status}`}
+      border="1px solid black"
     >
       {value}
     </Box>

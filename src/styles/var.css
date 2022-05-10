@@ -1,6 +1,13 @@
 :root {
   --principal-dark-bg: #2c2a2a;
   --principal-dark-text: #f3eceb;
+  --principal-text-shadow-dark: #caf9c9;
 
   --bg-letters-dark: #900c3f;
+
+  --bg-correct-letter: #0cad08;
+
+  --bg-absent-letter: #c45959;
+
+  --bg-present-letter: #ead526;
 }
