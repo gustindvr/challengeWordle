@@ -55,3 +55,25 @@ export const letterColumnThree = [
   { letter: 'n' },
   { letter: 'm' },
 ];
+
+export const messages = [
+  'Tu objetivo es adivinar la palabra del día',
+  'No sabrás cuantas letras tiene',
+  'Tendrás pequeñas ayudas tras cada intento',
+  'Las palabras están en español',
+];
+
+export const datagame = [
+  {
+    bg: 'var(--bg-correct-letter)',
+    type: 'Correcto',
+  },
+  {
+    bg: 'var(--bg-absent-letter)',
+    type: 'No existe',
+  },
+  {
+    bg: 'var(--bg-present-letter)',
+    type: 'Lugar incorrecto',
+  },
+];

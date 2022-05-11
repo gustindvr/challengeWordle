@@ -1,72 +1,135 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Navbar from './components/molecules/Navbar';
-
-import { elemToPlay } from './const';
 import Keyboard from './components/molecules/Keyboard';
 import Playground from './components/molecules/Playground';
-import { Box, useToast } from '@chakra-ui/react';
+import ModalGame from './components/organisms/Modal';
 
-function App() {
+import { Box, Heading, Text, useDisclosure, useToast } from '@chakra-ui/react';
+
+import { elemToPlay } from './const';
+import AlertStats from './components/atoms/AlertStats';
+
+const App = () => {
   const [word, setWord] = useState(elemToPlay.toUpperCase());
   const [turn, setTurn] = useState(0);
   const [currentWord, setCurrentWord] = useState('');
   const [gameStats, setGameStats] = useState([]);
   const [gameStatus, setGameStatus] = useState('playing');
+  const [letterExact, setLetterExact] = useState(false);
+  const [dataModal, setDataModal] = useState(undefined);
+  const [openModalGame, setopenModalGame] = useState(undefined);
+  const [openStats, setOpenStats] = useState(false);
+  const [statsData, setStatsData] = useState({
+    winner: 0,
+    loses: 0,
+  });
+
+  const statsInMemory = localStorage.getItem('stats');
+
+  console.log(JSON.parse(statsInMemory));
 
   const toast = useToast();
+  const { onOpen, isOpen, onClose } = useDisclosure();
 
+  console.log(word);
+
+  /**
+   * It validates the length of the word.
+   * @returns the length of the word.
+   */
   const validateLength = (item) => {
-    console.log(item.length);
-    console.log(word.length);
-    if (item.length > word?.length) {
+    if (word?.length < item.length) {
       toast({
-        variant: 'subtle',
-        title: 'Exceso',
-        description: 'Te pasaste por pocas letras',
         duration: 3000,
         isClosable: true,
         position: 'top',
+        render: () => (
+          <Box bg='rgba( 255, 216, 216 , 0.2)' p={3} textAlign='center'>
+            <Heading as='p' fontSize='md' bg='transparent'>
+              Menos es más
+            </Heading>
+            <Text bg='transparent'>Muchas letras</Text>
+          </Box>
+        ),
       });
-    } else if (item.length + 3 > word?.length) {
+      return;
+    }
+
+    if (item.length < word?.length) {
       toast({
-        variant: 'subtle',
-        title: 'Exceso',
-        description: 'Te pasaste por más de 3 letras, mínimo',
-        duration: 3000,
-        isClosable: true,
-        position: 'top',
-      });
-    } else if (item.length < word?.length) {
-      toast({
-        variant: 'subtle',
         title: 'Faltante',
-        description: 'Te faltan pocas letras',
         duration: 3000,
         isClosable: true,
         position: 'top',
+        render: () => (
+          <Box bg='rgba( 255, 216, 216 , 0.2)' p={3} textAlign='center'>
+            <Heading as='p' fontSize='md' bg='transparent'>
+              Más es menos
+            </Heading>
+            <Text bg='transparent'>Te faltan algunas letras</Text>
+          </Box>
+        ),
       });
-    } else if (item.length < word?.length - 3) {
+      return;
+    }
+
+    if (item.length === word?.length && !letterExact) {
       toast({
-        variant: 'subtle',
-        title: 'Faltante',
-        description: 'Te faltan más de 3 letras, mínimo',
         duration: 3000,
         isClosable: true,
         position: 'top',
+        render: () => (
+          <Box bg='rgba( 255, 216, 216 , 0.2)' p={3} textAlign='center'>
+            <Heading as='p' fontSize='md' bg='transparent'>
+              El punto justo
+            </Heading>
+            <Text bg='transparent'>Ni más ni menos letras</Text>
+          </Box>
+        ),
       });
+      setLetterExact(true);
+      return;
     }
   };
 
+  /**
+   * It checks if the current word is equal to the word to guess, if it is, it sets the game status to
+   * winner, if not, it checks if the turn is equal to the length of the word to guess, if it is, it sets
+   * the game status to loser, if not, it validates the length of the current word, increments the turn
+   * by one and sets the current word to an empty string
+   * @returns the current word, the turn and the game status.
+   */
   const onFinish = () => {
     if (currentWord === word) {
       setGameStats([...gameStats, currentWord]);
       setGameStatus('winner');
+      setDataModal({
+        title: 'Ganaste!',
+        message: 'Se agregó un punto a tu lista de victorias.',
+        messageButton: 'Seguir jugando',
+      });
+      setStatsData({
+        ...statsData,
+        winner: statsData?.winner + 1,
+      });
+
+      setopenModalGame(onOpen);
     }
 
     if (turn === word?.length) {
       setGameStats([...gameStats, currentWord]);
       setGameStatus('loser');
+      setDataModal({
+        title: 'Lo lamento',
+        message: 'No te alcanzaron los turnos. Más suerte la próxima vez',
+        messageButton: 'Volver a jugar',
+      });
+      setStatsData({
+        ...statsData,
+        loses: statsData?.loses + 1,
+      });
+      setopenModalGame(onOpen);
     }
 
     if (gameStatus !== 'playing') return;
@@ -77,9 +140,14 @@ function App() {
     setCurrentWord('');
   };
 
+  useEffect(() => {
+    localStorage.setItem('stats', JSON.stringify(statsData));
+  }, [statsData]);
+
   return (
     <>
-      <Navbar />
+      {openStats && <AlertStats statsData={statsData} />}
+      <Navbar setOpenStats={setOpenStats} openStats={openStats} />
       <Box mt='2em' mb='5em' minH='40vh'>
         <Playground
           gameStats={gameStats}
@@ -95,8 +163,16 @@ function App() {
           onfinish={() => onFinish()}
         />
       </Box>
+
+      <ModalGame
+        openModalGame={openModalGame}
+        dataModal={dataModal}
+        isOpen={isOpen}
+        onClose={onClose}
+        setWord={setWord}
+      />
     </>
   );
-}
+};
 
 export default App;
