@@ -8,7 +8,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-import { mdiChartBoxOutline, mdiCog, mdiHelpCircleOutline } from '@mdi/js';
+import { mdiChartBoxOutline, mdiHelpCircleOutline } from '@mdi/js';
 import Icon from '@mdi/react';
 import ModalHelp from '../ModalHelp';
 
@@ -48,7 +48,6 @@ const Navbar = ({ setOpenStats, openStats }) => {
               openStats ? setOpenStats(false) : setOpenStats(true)
             }
           />
-          <Icon path={mdiCog} size='2em' />
         </GridItem>
       </Grid>
       <ModalHelp isOpen={isOpen} onClose={onClose} />
