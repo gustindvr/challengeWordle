@@ -7,7 +7,7 @@ import ModalGame from './components/organisms/Modal';
 
 import { Box, Heading, Text, useDisclosure, useToast } from '@chakra-ui/react';
 
-import { elemToPlay } from './const';
+import { elemToPlay, dictionary } from './const';
 import AlertStats from './components/atoms/AlertStats';
 
 const App = () => {
@@ -19,20 +19,13 @@ const App = () => {
   const [letterExact, setLetterExact] = useState(false);
   const [dataModal, setDataModal] = useState(undefined);
   const [openModalGame, setopenModalGame] = useState(undefined);
-  const [openStats, setOpenStats] = useState(false);
-  const [statsData, setStatsData] = useState({
-    winner: 0,
-    loses: 0,
-  });
-
-  const statsInMemory = localStorage.getItem('stats');
-
-  console.log(JSON.parse(statsInMemory));
+  const [openStats, setOpenStats] = useState(undefined);
+  const [statsData, setStatsData] = useState(
+    JSON.parse(localStorage.getItem('stats'))
+  );
 
   const toast = useToast();
   const { onOpen, isOpen, onClose } = useDisclosure();
-
-  console.log(word);
 
   /**
    * It validates the length of the word.
@@ -138,11 +131,21 @@ const App = () => {
     setGameStats([...gameStats, currentWord]);
     setTurn(turn + 1);
     setCurrentWord('');
+    window.localStorage.setItem('stats', JSON.stringify(statsData));
   };
 
-  useEffect(() => {
-    localStorage.setItem('stats', JSON.stringify(statsData));
-  }, [statsData]);
+  const resetGame = () => {
+    const newRandomValue = Math.floor(Math.random() * dictionary.length);
+    const newValue = dictionary?.[newRandomValue];
+
+    onClose();
+
+    setWord(newValue.toUpperCase());
+    setCurrentWord('');
+    setGameStatus('playing');
+    setTurn(0);
+    setGameStats([]);
+  };
 
   return (
     <>
@@ -170,6 +173,7 @@ const App = () => {
         isOpen={isOpen}
         onClose={onClose}
         setWord={setWord}
+        resetGame={resetGame}
       />
     </>
   );

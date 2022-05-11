@@ -11,7 +11,7 @@ import {
   ModalOverlay,
 } from '@chakra-ui/react';
 
-const ModalGame = ({ openModalGame, isOpen, onClose, dataModal, setWord }) => {
+const ModalGame = ({ isOpen, onClose, dataModal, resetGame }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -30,7 +30,7 @@ const ModalGame = ({ openModalGame, isOpen, onClose, dataModal, setWord }) => {
               background: 'var(--principal-dark-text)',
               color: 'var(--principal-dark-bg)',
             }}
-            onClick={() => window?.location?.reload()}
+            onClick={() => resetGame()}
           >
             {dataModal?.messageButton}
           </Button>

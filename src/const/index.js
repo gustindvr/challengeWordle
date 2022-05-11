@@ -20,7 +20,7 @@ export const dictionary = [
   'ahorros',
 ];
 
-const elemRandom = Math.floor(Math.random() * dictionary.length);
+export const elemRandom = Math.floor(Math.random() * dictionary.length);
 export const elemToPlay = dictionary?.[elemRandom];
 
 export const letterColumnOne = [
