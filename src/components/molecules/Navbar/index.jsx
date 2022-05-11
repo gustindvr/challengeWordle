@@ -12,7 +12,7 @@ import { mdiChartBoxOutline, mdiCog, mdiHelpCircleOutline } from '@mdi/js';
 import Icon from '@mdi/react';
 import ModalHelp from '../ModalHelp';
 
-const Navbar = () => {
+const Navbar = ({ setOpenStats, openStats }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -40,7 +40,14 @@ const Navbar = () => {
           flexFlow='row wrap'
           justifyContent='end'
         >
-          <Icon path={mdiChartBoxOutline} size='2em' />
+          <Icon
+            path={mdiChartBoxOutline}
+            size='2em'
+            style={{ cursor: 'pointer' }}
+            onClick={() =>
+              openStats ? setOpenStats(false) : setOpenStats(true)
+            }
+          />
           <Icon path={mdiCog} size='2em' />
         </GridItem>
       </Grid>

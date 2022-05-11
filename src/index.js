@@ -9,9 +9,19 @@ const theme = extendTheme({
   components: {
     Button: {
       variants: {
-        solid: (props) => ({
+        solid: () => ({
           bg: 'transparent',
           padding: '0',
+          _hover: {
+            bg: 'transparent',
+          },
+        }),
+      },
+    },
+    Toast: {
+      variants: {
+        solid: () => ({
+          bg: 'transparent',
           _hover: {
             bg: 'transparent',
           },

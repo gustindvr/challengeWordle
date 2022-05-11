@@ -5,7 +5,7 @@ import { Box } from '@chakra-ui/react';
 import Letter from '../atoms/Letter';
 
 const Current = (Props) => {
-  const { value, currentWord } = Props;
+  const { currentWord } = Props;
 
   return (
     <Box display='flex' flexFlow='row wrap' justifyContent='center' w='100%'>
